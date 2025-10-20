@@ -3,11 +3,14 @@ import generateToken from "../utils/generateToken.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,passwordconfirm} = req.body;
 
-    if (!name || !email || !password)
+    if (!name || !email || !password || !passwordconfirm)
       return res.status(400).json({ message: "Please fill all fileds" });
 
+    if(password!== passwordconfirm){
+      return res.status(400).json({message:"Password do not match"})
+    }
     const userExist = await User.findOne({ email });
     if (userExist)
       return res.status(400).json({ message: "User already exist" });
