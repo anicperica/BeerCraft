@@ -2,7 +2,6 @@ import { Beer } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import type { FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
-
 interface LoginFormData {
   email: string;
   password: string;
@@ -15,6 +14,7 @@ export default function LoginPage() {
       const res = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(loginData),
       });
       if (!res.ok) {
@@ -25,14 +25,16 @@ export default function LoginPage() {
     },
     onSuccess: (data) => {
       console.log("Logged in user:", data);
-      localStorage.setItem("token", data.token);
-      navigate("/");
+      
+        navigate("/"); 
+      
     },
     onError: (error) => {
       console.error("Login Error:", error.message);
     },
   });
 
+  
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -88,7 +90,7 @@ export default function LoginPage() {
               to="/register"
               className="text-blue-600 hover:underline hover:text-blue-800 font-medium"
             >
-             Register 
+              Register
             </Link>
           </div>
         </div>
