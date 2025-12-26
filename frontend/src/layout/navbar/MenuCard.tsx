@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import NavLinks from "../../components/ui/NavLinks";
+import NavLinks from "../../components/Navigation/NavLinks";
 import { navLinks } from "../../data/navLinks";
 import { Link } from "react-router-dom";
 interface MenuProps {

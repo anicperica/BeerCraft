@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, Beer, ShoppingCart } from "lucide-react";
 import MenuCard from "./MenuCard";
 import { navLinks } from "../../data/navLinks";
-import NavLinks from "..//../components/ui/NavLinks";
+import NavLinks from "../../components/Navigation/NavLinks";
 import { Link } from "react-router-dom";
 import { isLoggedIn } from "../../utils/isLoged";
 
