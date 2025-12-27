@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import beerRoutes from "./routes/beerroutes.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/beers", beerRoutes);
 
 const startServer = async () => {
   try {
