@@ -14,7 +14,7 @@ export default function BeerHeader({beer}:BeerDetail) {
       </span>
 
       <h1 className="text-4xl md:text-5xl font-bold text-white">
-        Punk IPA
+        {beer.name}
       </h1>
     </>
   );

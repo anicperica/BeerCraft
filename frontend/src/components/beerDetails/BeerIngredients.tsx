@@ -11,7 +11,12 @@ export default function BeerIngredients({beer}:BeerDetail) {
         Ingredients
       </h3>
       <p className="text-zinc-400">
-        {beer.ingredients}
+        {beer.ingredients.map((item, index) => (
+    <span key={item}>
+      {item}
+      {index < beer.ingredients.length - 1 && ", "}
+    </span>
+  ))}
       </p>
     </div>
   );
