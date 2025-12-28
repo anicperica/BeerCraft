@@ -20,7 +20,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="flex justify-between items-center absolute pt-4 top-0 left-0 w-full z-50 ">
+    <div className="flex justify-between items-center absolute pt-4 top-0 left-0 w-full z-50 pb-3  ">
       <div className="flex justify-center items-center gap-2 pl-5  ">
         <Beer className="text-black bg-amber-400 rounded-2xl  p-2" size={50} />
         <h1 className="text-white text-xl font-bold">CraftBeer</h1>

@@ -4,6 +4,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import Layout from "./layout/Layout";
 import HomePage from "./pages/home/HomePage";
 import BeerDetails from "./pages/BeerDetails/BeerDetails";
+import BeerPage from "./pages/Beers/BeerPage";
 function App() {
   return (
     <Routes>
@@ -22,6 +23,14 @@ function App() {
         element={
           <Layout  pageBg="bg-zinc-950">
             <BeerDetails />
+          </Layout>
+        }
+      />
+       <Route
+        path="/beers"
+        element={
+          <Layout  pageBg="bg-zinc-950">
+            <BeerPage />
           </Layout>
         }
       />
