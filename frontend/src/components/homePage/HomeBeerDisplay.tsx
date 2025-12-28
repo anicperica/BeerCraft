@@ -12,8 +12,8 @@ export default function HomeBeerDisplay() {
     isError,
     error,
   }=useQuery({
-    queryKey:["beers"],
-    queryFn:fetchBeers
+    queryKey:["beers","featured"],
+    queryFn:() => fetchBeers(6),
   });
 
   if (isLoading){

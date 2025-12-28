@@ -1,7 +1,9 @@
 import type { Beer } from "../types";
 
-export const fetchBeers = async (): Promise<Beer[]> => {
-  const res = await fetch("http://localhost:5000/api/beers");
+export const fetchBeers = async (limit?:number): Promise<Beer[]> => {
+  const url=limit ? `http://localhost:5000/api/beers?limit=${limit}` :
+  `http://localhost:5000/api/beers`;
+  const res = await fetch(url);
 
   if (!res.ok) {
     throw new Error("Failed to fetch beers");
