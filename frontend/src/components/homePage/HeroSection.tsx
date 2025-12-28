@@ -1,7 +1,7 @@
 export default function HeroSection() {
   return (
     <div className="flex justify-center items-center h-screen ">
-      <div className="flex flex-col justify-center items-center gap-8 z-100">
+      <div className="flex flex-col justify-center items-center gap-8 z-0">
         <h1 className=" text-center text-5xl  lg:text-8xl font-bold px-5 md:px-20">
           <span className="text-white">A century of </span>
           <span className="text-amber-400">Brewing Excelence</span>

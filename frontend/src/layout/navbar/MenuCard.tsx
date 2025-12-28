@@ -11,7 +11,7 @@ export default function MenuCard({  onClose, loggedIn, onLogout}: MenuProps) {
 
    
   return (
-    <div className="absolute  flex flex-col justify-between items-center w-[65%] px-5 bg-zinc-800 border-b border-secondary  top-0  right-0 h-screen   bg-primary md:hidden ">
+    <div className="absolute z-50 flex flex-col justify-between items-center w-[65%] px-5 bg-zinc-800 border-b border-secondary top-0 right-0 h-screen md:hidden">
       <div className=" flex flex-col justify-center w-full   gap-8 text-gray-300">
         <button
           onClick={onClose}
