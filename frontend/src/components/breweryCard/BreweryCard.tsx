@@ -10,7 +10,7 @@ export default function BreweryCard({brewery}:BrewerycardProps) {
   const navigate = useNavigate();
 
   const goToDetails = () => {
-    navigate(`/brewery/`);
+    navigate(`/brewery/${brewery.id}`);
   };
 
   return (

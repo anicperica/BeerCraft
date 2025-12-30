@@ -19,3 +19,9 @@ export const fetchBeerById = async (id:string) => {
   }
   return res.json();
 }
+
+export const fetchBeersOfBreweryByName = async (breweryName: string): Promise<Beer[]> => {
+  const res = await fetch(`http://localhost:5000/api/beers/brewery/name/${encodeURIComponent(breweryName)}`);
+  if (!res.ok) throw new Error("Failed to fetch beers");
+  return res.json();
+};

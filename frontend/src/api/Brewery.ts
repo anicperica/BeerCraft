@@ -9,3 +9,12 @@ export const fetchBrewery =async (): Promise<Brewery[]> => {
   }
   return res.json();
 };
+
+export const fetchBreweryById = async (id:string) => {
+  const url=`http://localhost:5000/api/brewery/${id}`
+  const res = await fetch(url);
+  if (!res.ok){
+    throw new Error("Failed to find brewery");
+  }
+  return res.json();
+}
