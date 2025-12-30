@@ -5,6 +5,7 @@ import Layout from "./layout/Layout";
 import HomePage from "./pages/home/HomePage";
 import BeerDetails from "./pages/BeerDetails/BeerDetails";
 import BeerPage from "./pages/Beers/BeerPage";
+import BreweryPage from "./pages/Brewery/BreweryPage";
 function App() {
   return (
     <Routes>
@@ -31,6 +32,14 @@ function App() {
         element={
           <Layout  pageBg="bg-zinc-950">
             <BeerPage />
+          </Layout>
+        }
+      />
+      <Route
+        path="/brewery"
+        element={
+          <Layout  pageBg="bg-zinc-950">
+            <BreweryPage />
           </Layout>
         }
       />

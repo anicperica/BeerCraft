@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import beerRoutes from "./routes/beerroutes.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import breweryRoutes from "./routes/breweryRoutes.js"
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 
 app.use("/api/auth", authRoutes);
 app.use("/api/beers", beerRoutes);
+app.use("/api/brewery", breweryRoutes);
 
 const startServer = async () => {
   try {

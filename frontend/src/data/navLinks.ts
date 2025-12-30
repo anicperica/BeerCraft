@@ -10,6 +10,6 @@ export interface NavLinkItem {
 export const navLinks: NavLinkItem[] = [
   { name: "Home", path: "/", icon: Home },
   { name: "Beers", path: "/beers", icon: Beer },
-  { name: "Breweries", path: "/breweries", icon: Factory },
+  { name: "Breweries", path: "/brewery", icon: Factory },
   { name: "Admin", path: "/admin", icon: ShieldCheck },
 ];

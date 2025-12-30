@@ -26,3 +26,13 @@ export interface BeerDetails {
   tastingNotes: string;
   ingredients: string[];
 }
+
+export interface Brewery{
+  id:string;
+  name:string;
+  location:string;
+  founded:number;
+  shortDescription:string;
+  story:string;
+  image:string;
+}
