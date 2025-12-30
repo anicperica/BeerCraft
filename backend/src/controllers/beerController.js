@@ -50,3 +50,25 @@ export const getBeerById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getBeersByBreweryName = async (req, res) => {
+  try {
+    const breweryName = req.params.name; 
+    const beers = await Beer.find({ brewery: breweryName }); 
+
+    res.json(
+      beers.map(beer => ({
+        id: beer._id,
+        name: beer.name,
+        breweryName: beer.breweryName,
+        description: beer.description,
+        price: beer.price,
+        alcohol: beer.alcohol,
+        image: beer.image,
+      }))
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};

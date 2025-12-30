@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchBeerById } from "../../api/Beers";
 import { Link, useParams } from "react-router-dom";
 
-export default function BeerDetailsLayout() {
+export default function BeerDetails() {
   const { id } = useParams();
 
   const {
