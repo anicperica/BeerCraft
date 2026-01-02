@@ -6,7 +6,8 @@ import HomePage from "./pages/home/HomePage";
 import BeerDetails from "./pages/BeerDetails/BeerDetails";
 import BeerPage from "./pages/Beers/BeerPage";
 import BreweryPage from "./pages/Brewery/BreweryPage";
-import BreweryDetails  from "./pages/BreweryDetails/Brewerydetails";
+import BreweryDetails from "./pages/BreweryDetails/Brewerydetails";
+import AdminPage from "./pages/Admin/AdminPage";
 function App() {
   return (
     <Routes>
@@ -23,15 +24,15 @@ function App() {
       <Route
         path="beers/:id"
         element={
-          <Layout  pageBg="bg-zinc-950">
+          <Layout pageBg="bg-zinc-950">
             <BeerDetails />
           </Layout>
         }
       />
-       <Route
+      <Route
         path="/beers"
         element={
-          <Layout  pageBg="bg-zinc-950">
+          <Layout pageBg="bg-zinc-950">
             <BeerPage />
           </Layout>
         }
@@ -39,7 +40,7 @@ function App() {
       <Route
         path="/brewery"
         element={
-          <Layout  pageBg="bg-zinc-950">
+          <Layout pageBg="bg-zinc-950">
             <BreweryPage />
           </Layout>
         }
@@ -47,8 +48,16 @@ function App() {
       <Route
         path="brewery/:id"
         element={
-          <Layout  pageBg="bg-zinc-950">
+          <Layout pageBg="bg-zinc-950">
             <BreweryDetails />
+          </Layout>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <Layout>
+            <AdminPage />
           </Layout>
         }
       />

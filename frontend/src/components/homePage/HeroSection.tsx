@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function HeroSection() {
   return (
     <div className="flex justify-center items-center h-screen ">
@@ -10,13 +12,19 @@ export default function HeroSection() {
           Every beer has a story. Discover hand-crafted brews from legendary
           breweries to bold newcomers.
         </h2>
-        <div className="flex md:flex-row flex-col justify-center items-center gap-5 w-full px-10 pt-5  " >
-        <button className="w-full md:w-max max-w-[450px] text-center text-black bg-amber-400 px-4 py-2 md:px-10 md:py-3 md:text-xl rounded-xl font-bold hover:bg-black hover:text-white">
+        <div className="flex md:flex-row flex-col justify-center items-center gap-5 w-full px-10 pt-5  ">
+          <Link
+            to="/beers"
+            className="w-full md:w-max max-w-[450px] text-center text-black bg-amber-400 px-4 py-2 md:px-10 md:py-3 md:text-xl rounded-xl font-bold hover:bg-black hover:text-white"
+          >
             Explore our Beers
-        </button>
-        <button className="w-4/5 mx-auto md:mx-0 md:w-max max-w-[400px]  text-center text-black bg-gray-300 px-4 py-2  md:px-10 md:py-3 md:text-xl rounded-xl font-bold hover:bg-black hover:text-amber-400">
+          </Link>
+          <Link
+            to="/brewery"
+            className="w-4/5 mx-auto md:mx-0 md:w-max max-w-[400px]  text-center text-black bg-gray-300 px-4 py-2  md:px-10 md:py-3 md:text-xl rounded-xl font-bold hover:bg-black hover:text-amber-400"
+          >
             Meet the Breweries
-        </button>
+          </Link>
         </div>
       </div>
     </div>
