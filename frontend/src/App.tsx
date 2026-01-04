@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+
 import RegistrationPage from "./pages/Registration/RegistrationPage";
 import LoginPage from "./pages/Login/LoginPage";
 import Layout from "./layout/Layout";
@@ -8,7 +9,12 @@ import BeerPage from "./pages/Beers/BeerPage";
 import BreweryPage from "./pages/Brewery/BreweryPage";
 import BreweryDetails from "./pages/BreweryDetails/Brewerydetails";
 import AdminPage from "./pages/Admin/AdminPage";
+import AdminRoute from "./components/authProtection/AdminRoute";
+
 function App() {
+
+  
+
   return (
     <Routes>
       <Route path="/register" element={<RegistrationPage />} />
@@ -53,15 +59,19 @@ function App() {
           </Layout>
         }
       />
-      <Route
-        path="/admin"
-        element={
-          <Layout>
-            <AdminPage />
-          </Layout>
-        }
-      />
+
+       <Route element={<AdminRoute />}>
+        <Route
+          path="/admin"
+          element={
+            <Layout>
+              <AdminPage />
+            </Layout>
+          }
+        />
+      </Route>
     </Routes>
+      
   );
 }
 

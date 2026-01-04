@@ -2,12 +2,17 @@ import { Beer } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import type { FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "../../context/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 interface LoginFormData {
   email: string;
   password: string;
 }
 
 export default function LoginPage() {
+ const { setUser } = useAuth();
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const loginMutation = useMutation({
     mutationFn: async (loginData: LoginFormData) => {
@@ -21,11 +26,14 @@ export default function LoginPage() {
         const errorData = await res.json();
         throw new Error(errorData.message || "Login Failed");
       }
-      return res.json();
+      const data=await res.json();
+     
+      return data
     },
     onSuccess: (data) => {
       console.log("Logged in user:", data);
-      
+       setUser(data)
+      queryClient.setQueryData(["currentUser"], data)
         navigate("/"); 
       
     },
@@ -48,24 +56,24 @@ export default function LoginPage() {
   return (
     <form
       onSubmit={handleLogin}
-      className="flex flex-col  justify-center items-center w-full px-5 h-screen bg-amber-50 "
+      className="flex flex-col  justify-center items-center w-full px-5 h-screen bg-zinc-900 "
     >
-      <div className="flex flex-col justify-center items-center w-full max-w-[500px] px-10 py-10 border border-gray-600 rounded-2xl">
+      <div className="flex flex-col justify-center items-center w-full max-w-[500px] px-10 py-10 border border-amber-500 rounded-2xl">
         <div className="flex flex-col justify-center items-center">
-          <Beer className="text-orange-900 " size={60} />
-          <h1 className="py-2 text-2xl">Welcome</h1>
-          <h1 className="pb-10  text-l text-amber-800">
+          <Beer className="text-amber-400 " size={60} />
+          <h1 className="py-2 text-2xl text-white font-bold">Welcome</h1>
+          <h1 className="pb-10  text-l text-white">
             Join the craft beer community
           </h1>
         </div>
-        <div className="flex flex-col justify-center items-start w-full gap-7">
+        <div className="flex flex-col justify-center items-start w-full gap-7 ">
           <input
             id="email"
             name="email"
             type="text"
             placeholder="your@gmail.com"
             required
-            className="w-full  border border-gray-500 rounded-l px-4 py-1"
+            className="w-full  border border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400 "
           />
 
           <input
@@ -74,21 +82,21 @@ export default function LoginPage() {
             type="password"
             placeholder="password"
             required
-            className=" w-full border border-gray-500 rounded-l px-4 py-1"
+            className=" w-full border border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
         </div>
         <div className="flex flex-col justify-center items-center w-full pt-10 ">
           <button
             type="submit"
-            className="w-full py-2 rounded-xl bg-amber-700 "
+            className="w-full py-2 rounded-xl bg-amber-400  font-bold"
           >
             Sign up
           </button>
           <div className=" flex items-center pt-3 gap-2 text-sm">
-            <p>Dont have and account</p>
+            <p className="text-gray-300">Dont have and account</p>
             <Link
               to="/register"
-              className="text-blue-600 hover:underline hover:text-blue-800 font-medium"
+              className="text-amber-600 hover:underline hover:text-amber-800 font-medium"
             >
               Register
             </Link>

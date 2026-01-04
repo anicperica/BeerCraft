@@ -30,6 +30,7 @@ export const registerUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
     });
   } catch (error) {
     res.status(500).json({ message: "Server error:", error: error.message });
@@ -54,11 +55,29 @@ export const loginUser = async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        isAdmin: user.isAdmin,
       });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
     }
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+export const getCurrentUserProfile = async (req,res) => {
+  try {
+    
+     const user = req.user;
+    res.json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    });
+  } catch (error) {
+    console.error("Error in getCurrentUserProfile:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };

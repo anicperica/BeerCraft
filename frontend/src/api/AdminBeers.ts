@@ -2,7 +2,7 @@ import type { BeerDetails } from "../types";
 
 export const fetchAdminBeers = async (): Promise<BeerDetails[]> => {
   const url = "http://localhost:5000/api/admin/beers";
-  const res = await fetch(url);
+  const res = await fetch(url, { credentials: "include" });
 
   if (!res.ok) {
     throw new Error("Failed to fetch beers");
@@ -15,6 +15,7 @@ export const addAdminBeer = async (beer: BeerDetails) => {
 
   const res = await fetch(url, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -32,6 +33,7 @@ export const updateAdminBeer = async (beer: BeerDetails) => {
   const url = `http://localhost:5000/api/admin/beers/${beer.id}`;
   const res = await fetch(url, {
     method: "PUT",
+     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(beer),
   });
@@ -42,6 +44,7 @@ export const updateAdminBeer = async (beer: BeerDetails) => {
 export const deleteAdminBeer = async (id: string) => {
   const url = `http://localhost:5000/api/admin/beers/${id}`;
   const res = await fetch(url, {
+    credentials: "include",
     method: "DELETE",
   });
 
