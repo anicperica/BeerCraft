@@ -17,6 +17,7 @@ export default function RegistrationPage() {
     mutationFn: async (userData: RegisterFormData) => {
       const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
+        credentials:"include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
@@ -52,13 +53,13 @@ export default function RegistrationPage() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col  justify-center items-center w-full px-5 h-screen  bg-amber-50 "
+      className="flex flex-col  justify-center items-center w-full px-5 h-screen  bg-zinc-900 "
     >
-      <div className="flex flex-col justify-center items-center w-full max-w-[500px] px-10 py-10 border border-gray-600 rounded-2xl">
+      <div className="flex flex-col justify-center items-center w-full max-w-[500px] px-10 py-10 border border-amber-400 rounded-2xl">
         <div className="flex flex-col justify-center items-center">
-          <Beer className="text-orange-900 " size={60} />
-          <h1 className="py-2 text-2xl">Create account</h1>
-          <h1 className="pb-10  text-l text-amber-800">
+          <Beer className="text-amber-400 " size={60} />
+          <h1 className="py-2 text-2xl text-white font-bold">Create account</h1>
+          <h1 className="pb-10  text-l text-white">
             Join the craft beer community
           </h1>
         </div>
@@ -69,7 +70,7 @@ export default function RegistrationPage() {
             type="text"
             placeholder="Name"
             required
-            className=" w-full border border-gray-500 rounded-l px-4 py-1"
+            className=" w-full border border-gray-500 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
 
           <input
@@ -78,7 +79,7 @@ export default function RegistrationPage() {
             type="text"
             placeholder="your@gmail.com"
             required
-            className="w-full  border border-gray-500 rounded-l px-4 py-1"
+            className="w-full  border border-gray-500 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
 
           <input
@@ -87,7 +88,7 @@ export default function RegistrationPage() {
             type="password"
             placeholder="password"
             required
-            className=" w-full border border-gray-500 rounded-l px-4 py-1"
+            className=" w-full border border-gray-500 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
 
           <input
@@ -96,18 +97,18 @@ export default function RegistrationPage() {
             type="password"
             placeholder="password"
             required
-            className=" w-full border border-gray-500 rounded-l px-4 py-1"
+            className=" w-full border border-gray-500 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
         </div>
         <div className="flex flex-col justify-center items-center w-full pt-10 ">
-          <button className="w-full py-2 rounded-xl bg-amber-700 ">
+          <button className="w-full py-2 rounded-xl bg-amber-400 font-bold ">
             Sign up
           </button>
-          <div className=" flex items-center pt-3 gap-2 text-sm">
-            <p>Already have an account?</p>
+          <div className=" flex items-center pt-3 gap-2 text-sm ">
+            <p className="text-gray-400">Already have an account?</p>
             <Link
               to="/login"
-              className="text-blue-600 hover:underline hover:text-blue-800 font-medium"
+              className="text-amber-400 hover:underline hover:text-amber-600 font-medium"
             >
               Log in
             </Link>
