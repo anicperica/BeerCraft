@@ -3,7 +3,7 @@ import BreweryStory from "../../components/breweryDetails/BreweryStory";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { fetchBreweryById } from "../../api/Brewery";
-import { fetchBeersOfBreweryByName } from "../../api/Beers";
+import {fetchBeersOfBreweryById} from "../../api/Beers"
 import BeerCard from "../../components/beerCard/BeerCard";
 export default function BreweryDetailsPage() {
   const { id } = useParams();
@@ -23,9 +23,9 @@ export default function BreweryDetailsPage() {
     isLoading: beersLoading,
     isError: beersError,
   } = useQuery({
-    queryKey: ["breweryBeers", breweryDetails?.name],
-    queryFn: () => fetchBeersOfBreweryByName(breweryDetails!.name),
-    enabled: !!breweryDetails,
+    queryKey: ["breweryBeers", id],
+    queryFn: () => fetchBeersOfBreweryById(id!),
+    enabled: !!id,
   });
 
   if (isLoading || beersLoading)

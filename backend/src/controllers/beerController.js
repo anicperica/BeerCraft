@@ -3,7 +3,7 @@ import Beer from "../models/beerModel.js";
 export const getAllBeers = async (req, res) => {
   try {
     const limit = req.query.limit ? Number(req.query.limit) : null;
-    let query = Beer.find();
+    let query = Beer.find().populate("brewery", "name"); 
     if (limit) {
       query = query.limit(limit);
     }
@@ -13,7 +13,7 @@ export const getAllBeers = async (req, res) => {
       beers.map((beer) => ({
         id: beer._id,
         name: beer.name,
-        brewery: beer.brewery,
+        brewery: beer.brewery.name,
         description: beer.description,
         price: beer.price,
         alcohol: beer.alcohol,
@@ -28,14 +28,14 @@ export const getAllBeers = async (req, res) => {
 
 export const getBeerById = async (req, res) => {
   try {
-    const beer = await Beer.findById(req.params.id);
+    const beer = await Beer.findById(req.params.id).populate("brewery", "name");
     if (!beer) {
       return res.staus(404).json({ message: "Beer not found" });
     }
     res.json({
       id: beer._id,
       name: beer.name,
-      brewery: beer.brewery,
+      brewery: beer.brewery.name,
       description: beer.description,
       price: beer.price,
       alcohol: beer.alcohol,
@@ -51,21 +51,24 @@ export const getBeerById = async (req, res) => {
   }
 };
 
-export const getBeersByBreweryName = async (req, res) => {
+export const getBeersByBreweryId = async (req, res) => {
   try {
-    const breweryName = req.params.name; 
-    const beers = await Beer.find({ brewery: breweryName }); 
+    const { id } = req.params;
+
+    const beers = await Beer.find({ brewery: id })
+      .populate("brewery", "name");
 
     res.json(
-      beers.map(beer => ({
-        id: beer._id,
+      beers.map((beer) => ({
+       id: beer._id,
         name: beer.name,
-        breweryName: beer.breweryName,
+        brewery: beer.brewery.name,
         description: beer.description,
         price: beer.price,
         alcohol: beer.alcohol,
         image: beer.image,
       }))
+      
     );
   } catch (error) {
     console.error(error);

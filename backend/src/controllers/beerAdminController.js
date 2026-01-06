@@ -3,13 +3,16 @@ import Brewery from "../models/breweryModel.js";
 
 export const getAdminBeers = async (req, res) => {
   try {
-    const adminBeers = await Beer.find();
+    const adminBeers = await Beer.find().populate("brewery");
 
     res.json(
       adminBeers.map((beer) => ({
         id: beer._id,
         name: beer.name,
-        brewery: beer.brewery,
+        brewery: {
+          id: beer.brewery?._id,
+          name: beer.brewery?.name,
+        },
         description: beer.description,
         price: beer.price,
         alcohol: beer.alcohol,
@@ -103,7 +106,7 @@ export const updateAdminBeer = async (req, res) => {
       tastingNotes,
       ingredients,
     };
-    console.log("update Id:", id);
+   
     const updatedBeer = await Beer.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
@@ -161,7 +164,8 @@ export const getAdminBrewery = async (req, res) => {
 
 export const addAdminBrewery = async (req, res) => {
   try {
-    const { name, location, shortDescription, founded, story, image } = req.body;
+    const { name, location, shortDescription, founded, story, image } =
+      req.body;
 
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
@@ -184,11 +188,11 @@ export const addAdminBrewery = async (req, res) => {
   }
 };
 
-
 export const updateAdminBrewery = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, location, shortDescription, founded, story, image } = req.body;
+    const { name, location, shortDescription, founded, story, image } =
+      req.body;
 
     const updatedBrewery = await Brewery.findByIdAndUpdate(
       id,
@@ -207,20 +211,29 @@ export const updateAdminBrewery = async (req, res) => {
   }
 };
 
-
 export const deleteAdminBrewery = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedBrewery = await Brewery.findByIdAndDelete(id);
+    const brewery = await Brewery.findById(id);
 
-    if (!deletedBrewery) {
+    if (!brewery) {
       return res.status(404).json({ message: "Brewery not found" });
     }
 
+    const beerCount = await Beer.countDocuments({ brewery: id });
+
+    if (beerCount > 0) {
+      return res.status(400).json({
+        message:
+          "Cannot delete brewery. There are beers linked to this brewery.",
+      });
+    }
+
+    await Brewery.findByIdAndDelete(id);
+
     res.status(200).json({
       message: "Brewery deleted successfully",
-      brewery: deletedBrewery,
     });
   } catch (error) {
     console.error(error);

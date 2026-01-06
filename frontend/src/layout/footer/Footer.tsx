@@ -26,7 +26,7 @@ export default function Footer() {
           <Link className="text-gray-400 hover:text-amber-400 " to="/beers">
             Beers
           </Link>
-          <Link className="text-gray-400 hover:text-amber-400 " to="/breweris">
+          <Link className="text-gray-400 hover:text-amber-400 " to="/brewery">
             Breweries
           </Link>
         </div>
