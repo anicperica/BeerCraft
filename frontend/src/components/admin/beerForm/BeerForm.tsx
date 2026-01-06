@@ -1,30 +1,41 @@
 import { useState } from "react";
-import  type { BeerDetails } from "../../../types/index"; 
-
-
+import  type { BeerDetails ,Brewery} from "../../../types/index"; 
+import { useQuery } from "@tanstack/react-query";
+import { fetchAdminBrewery } from "../../../api/AdminBrewery";
 export interface BeerFormProps {
   beer?: BeerDetails;
   onSubmit: (data: BeerDetails) => void; 
   onCancel: () => void;
 }
 
-export default function BeerForm({ beer, onSubmit, onCancel }: BeerFormProps) {
+export default function BeerForm({ beer, onSubmit, onCancel }: BeerFormProps) { 
+
+
+  const { data: breweries } = useQuery<Brewery[]>({
+    queryKey: ["adminBrewery"],
+    queryFn: fetchAdminBrewery,
+  });
   const [formData, setFormData] = useState<BeerDetails>({
     id: beer?.id || "",
-
     name: beer?.name || "",
-    brewery: beer?.brewery || "",
+
+  
+    brewery:
+      typeof beer?.brewery === "string"
+        ? beer.brewery
+        : (beer?.brewery as any)?.id || "",
+
     description: beer?.description || "",
     price: beer?.price || 0,
     alcohol: beer?.alcohol || "",
     image: beer?.image || "",
-
     style: beer?.style || "",
     bitternes: beer?.bitternes || "low",
     volume: beer?.volume || "",
     tastingNotes: beer?.tastingNotes || "",
     ingredients: beer?.ingredients || [],
   });
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -59,14 +70,20 @@ export default function BeerForm({ beer, onSubmit, onCancel }: BeerFormProps) {
 
         <div className="flex flex-col">
           <label className="mb-1 text-gray-300">Brewery *</label>
-          <input
+           <select
             name="brewery"
-            placeholder="Brewery"
             value={formData.brewery}
             onChange={handleChange}
             required
-            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white"
-          />
+            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2"
+          >
+            <option value="">Select brewery</option>
+            {breweries?.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

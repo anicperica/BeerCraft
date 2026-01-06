@@ -11,6 +11,7 @@ import BeerModal from "./beerForm/BeerModal";
 import BeerForm from "./beerForm/BeerForm";
 import type { BeerDetails } from "../../types/index";
 
+
 export default function AdminBeers() {
   const queryClient = useQueryClient();
 

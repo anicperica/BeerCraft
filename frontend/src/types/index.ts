@@ -27,6 +27,21 @@ export interface BeerDetails {
   ingredients: string[];
 }
 
+export interface BeerFormData {
+  id?: string;
+  name: string;
+  brewery: string;
+  description: string;
+  price: number;
+  alcohol: string;
+  image: string;
+  style: string;
+  bitternes: "low" | "medium" | "high";
+  volume: string;
+  tastingNotes: string;
+  ingredients: string[];
+}
+
 export interface Brewery{
   id:string;
   name:string;

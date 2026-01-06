@@ -3,7 +3,11 @@ import mongoose from "mongoose";
 const beerSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    brewery: { type: String, required: true },
+    brewery: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Brewery",
+      required: true,
+    },
     description: { type: String, required: true },
     price: { type: Number, required: true },
     alcohol: { type: String, required: true },
