@@ -11,6 +11,8 @@ import BreweryDetails from "./pages/BreweryDetails/Brewerydetails";
 import AdminPage from "./pages/Admin/AdminPage";
 import AdminRoute from "./components/authProtection/AdminRoute";
 import ProtectedRoute from "./components/authProtection/ProtectedRoute";
+import CartPage from "./pages/Cart/CartPage";
+import FavoritesPage from "./pages/Favorite/FavoritesPage";
 function App() {
   return (
     <Routes>
@@ -54,6 +56,22 @@ function App() {
           element={
             <Layout pageBg="bg-zinc-950">
               <BreweryDetails />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Layout pageBg="bg-zinc-950">
+              <CartPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/favorites"
+          element={
+            <Layout pageBg="bg-zinc-950">
+              <FavoritesPage />
             </Layout>
           }
         />

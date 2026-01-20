@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import type { Beer } from "../../types/index";
-
+import { useCart } from "../../context/CartContext";
 interface BeerCardProps {
   beer: Beer;
 }
 
 export default function BeerCard({ beer }: BeerCardProps) {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   const goToDetails = () => {
     navigate(`/beers/${beer.id}`);
+  };
+
+  const buyOne = () => {
+    addToCart(beer.id, beer.name, 1);
   };
   return (
     <div
@@ -59,7 +64,11 @@ export default function BeerCard({ beer }: BeerCardProps) {
           >
             Details
           </button>
-          <button className="flex-1 py-2 rounded-lg bg-amber-400 text-black font-semibold hover:bg-amber-500">
+          <button
+            className="flex-1 py-2 rounded-lg bg-amber-400 text-black font-semibold hover:bg-amber-500"
+            onClick={buyOne}
+            type="button"
+          >
             Buy
           </button>
         </div>
