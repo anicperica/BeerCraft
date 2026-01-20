@@ -73,7 +73,7 @@ export default function LoginPage() {
             type="text"
             placeholder="your@gmail.com"
             required
-            className="w-full  border border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400 "
+            className="w-full  border text-white border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400 "
           />
 
           <input
@@ -82,7 +82,7 @@ export default function LoginPage() {
             type="password"
             placeholder="password"
             required
-            className=" w-full border border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400"
+            className=" w-full border text-white border-gray-300 rounded-l px-4 py-1 placeholder:text-gray-400"
           />
         </div>
         <div className="flex flex-col justify-center items-center w-full pt-10 ">

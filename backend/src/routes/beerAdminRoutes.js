@@ -19,7 +19,7 @@ router.post("/beers", protectRoute,adminOnly,addAdminBeer);
 router.put("/beers/:id",protectRoute ,adminOnly,updateAdminBeer);
 router.delete("/beers/:id",protectRoute ,adminOnly, deleteAdminBeer);
 
-// Brewery routes
+
 router.get("/brewery", protectRoute ,adminOnly,getAdminBrewery);
 router.post("/brewery",protectRoute ,adminOnly, addAdminBrewery);
 router.put("/brewery/:id",protectRoute ,adminOnly, updateAdminBrewery);
