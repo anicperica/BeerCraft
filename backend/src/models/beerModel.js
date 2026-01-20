@@ -13,7 +13,7 @@ const beerSchema = new mongoose.Schema(
     alcohol: { type: String, required: true },
     image: { type: String, required: true },
 
-    //Details
+ 
     style: { type: String, required: true },
     bitterness: {
       type: String,
