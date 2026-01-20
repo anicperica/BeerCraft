@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, Beer, ShoppingCart } from "lucide-react";
+import { Menu, Beer, ShoppingCart, Heart  } from "lucide-react";
 import MenuCard from "./MenuCard";
 import { navLinks } from "../../data/navLinks";
 import NavLinks from "../../components/Navigation/NavLinks";
@@ -8,6 +8,7 @@ import { isLoggedIn } from "../../utils/isLoged";
 import { useAuth } from "../../context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
   const { setUser } = useAuth();
   const queryClient = useQueryClient();
@@ -42,9 +43,12 @@ export default function Navbar() {
         />
       </div>
       <div className="flex justify-center items-center gap-5 pr-5">
-        <button className="text-gray-300">
-          <ShoppingCart />
-        </button>
+         <Link   to="/favorites" className="text-gray-300">
+          <Heart   />
+        </Link>
+        <Link   to="/cart" className="text-gray-300">
+          <ShoppingCart   />
+        </Link>
         {loggedIn ? (
           <button
             onClick={handleLogout}
