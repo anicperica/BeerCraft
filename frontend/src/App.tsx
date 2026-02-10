@@ -13,6 +13,7 @@ import AdminRoute from "./components/authProtection/AdminRoute";
 import ProtectedRoute from "./components/authProtection/ProtectedRoute";
 import CartPage from "./pages/Cart/CartPage";
 import FavoritesPage from "./pages/Favorite/FavoritesPage";
+
 function App() {
   return (
     <Routes>
@@ -85,6 +86,7 @@ function App() {
             </Layout>
           }
         />
+     
       </Route>
     </Routes>
   );
