@@ -24,6 +24,8 @@ const AuthContext = createContext<AuthContextType>({
   authChecked: false,
 });
 
+export { AuthContext };
+
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
@@ -33,7 +35,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: fetchCurrentUser,
     retry: false,
     refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 60 * 1000,
   });
 
   useEffect(() => {
