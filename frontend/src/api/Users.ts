@@ -37,3 +37,14 @@ export const updateUser = async (id: string, data: { name?: string; email?: stri
 
   return res.json();
 };
+
+export const deleteUser = async (id: string) => {
+  const res = await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to delete user");
+
+  return res.json();
+};

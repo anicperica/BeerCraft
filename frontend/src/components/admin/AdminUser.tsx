@@ -1,7 +1,7 @@
 import UserModal from "../../components/admin/userForm/UserModal";
 import UserForm from "../../components/admin/userForm/UserForm";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchAllRegularUsers, updateUser } from "../../api/Users";
+import { fetchAllRegularUsers, updateUser, deleteUser } from "../../api/Users";
 import { useState } from "react";
 
 
@@ -20,6 +20,11 @@ export default function AdminUser() {
       qc.invalidateQueries({ queryKey: ["adminUsers"] });
       setEditingUser(null);
     },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteUser(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["adminUsers"] }),
   });
 
   const handleSave = (formData: any) => {
@@ -43,6 +48,15 @@ export default function AdminUser() {
             </div>
             <div className="flex gap-2">
               <button onClick={() => setEditingUser(u)} className="px-3 py-1 bg-amber-500 text-black rounded">Edit</button>
+              <button
+                onClick={() => {
+                  if (confirm(`Delete user ${u.name}?`)) deleteMutation.mutate(u.id);
+                }}
+                disabled={deleteMutation.isPending}
+                className="px-3 py-1 bg-red-600 text-white rounded"
+              >
+                {deleteMutation.isPending ? "Deleting..." : "Delete"}
+              </button>
             </div>
           </div>
         ))}
