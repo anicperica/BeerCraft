@@ -52,10 +52,10 @@ export default function AdminUser() {
                 onClick={() => {
                   if (confirm(`Delete user ${u.name}?`)) deleteMutation.mutate(u.id);
                 }}
-                disabled={deleteMutation.isLoading}
+                disabled={deleteMutation.isPending}
                 className="px-3 py-1 bg-red-600 text-white rounded"
               >
-                {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+                {deleteMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>
