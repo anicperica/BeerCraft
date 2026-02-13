@@ -1,5 +1,33 @@
 import Beer from "../models/beerModel.js";
 import Brewery from "../models/breweryModel.js";
+import cloudinary from "../lib/cloudinary.js";
+
+function bufferToDataUrl(file) {
+  const base64 = file.buffer.toString("base64");
+  return `data:${file.mimetype};base64,${base64}`;
+}
+
+export const uploadAdminImage = async (req, res) => {
+  try {
+   
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const dataUri = bufferToDataUrl(req.file);
+
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "beercraft",
+      resource_type: "image",
+    });
+
+    return res.status(200).json({ url: result.secure_url });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Upload failed" });
+  }
+};
+
 
 export const getAdminBeers = async (req, res) => {
   try {

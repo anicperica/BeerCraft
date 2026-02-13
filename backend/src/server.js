@@ -6,7 +6,7 @@ import beerRoutes from "./routes/beerroutes.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import breweryRoutes from "./routes/breweryRoutes.js"
-import beerAdminRoutes from "./routes/beerAdminRoutes.js"
+import AdminRoutes from "./routes/AdminRoutes.js"
 dotenv.config();
 
 const app = express();
@@ -24,7 +24,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/beers", beerRoutes);
 app.use("/api/brewery", breweryRoutes);
-app.use("/api/admin", beerAdminRoutes);
+app.use("/api/admin", AdminRoutes);
 
 const startServer = async () => {
   try {
