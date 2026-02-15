@@ -1,35 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, Beer, ShoppingCart, Heart  } from "lucide-react";
 import MenuCard from "./MenuCard";
 import { navLinks } from "../../data/navLinks";
 import NavLinks from "../../components/Navigation/NavLinks";
 import { Link } from "react-router-dom";
-import { isLoggedIn } from "../../utils/isLoged";
 import { useAuth } from "../../context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
+  const loggedIn = !!user;
+
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
+  
 
   const handleLogout = () => {
-    document.cookie = "jwt=; max-age=0; path=/";
-    setLoggedIn(false);
-    setUser(null);
+   setUser(null);
     queryClient.setQueryData(["currentUser"], null);
+    setIsOpen(false);
     navigate("/");
   };
 
-  useEffect(() => {
-    setLoggedIn(isLoggedIn());
-  }, []);
-
+  
   return (
     <div className="flex justify-between items-center absolute pt-4 top-0 left-0 w-full z-50 pb-3  ">
       <div className="flex justify-center items-center gap-2 pl-5  ">

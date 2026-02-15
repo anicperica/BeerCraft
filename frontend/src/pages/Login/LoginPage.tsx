@@ -32,7 +32,6 @@ export default function LoginPage() {
       return data
     },
     onSuccess: (data) => {
-      console.log("Logged in user:", data);
        setUser(data)
       queryClient.setQueryData(["currentUser"], data)
         navigate("/"); 
