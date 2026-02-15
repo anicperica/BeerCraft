@@ -1,4 +1,4 @@
-import HomePicture from "../../assets/homeImage.jpg";
+import HomePicture from "../../assets/homeImage3.webp";
 import HeroSection from "../../components/homePage/HeroSection";
 import SubHeroSection from "../../components/homePage/SubHeroSection";
 import HomeBeerDisplay from "../../components/homePage/HomeBeerDisplay";

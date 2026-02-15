@@ -1,3 +1,5 @@
+import { API_URL } from "./config";
+
 interface RegularUser {
   id: string;
   name: string;
@@ -10,7 +12,7 @@ interface UsersResponse {
 }
 
 export const fetchAllRegularUsers = async (): Promise<UsersResponse> => {
-  const res = await fetch("http://localhost:5000/api/auth/users", {
+  const res = await fetch(`${API_URL}/api/auth/users`, {
     method: "GET",
     credentials: "include",
   });
@@ -25,8 +27,11 @@ export const fetchAllRegularUsers = async (): Promise<UsersResponse> => {
   return res.json();
 };
 
-export const updateUser = async (id: string, data: { name?: string; email?: string; isAdmin?: boolean }) => {
-  const res = await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+export const updateUser = async (
+  id: string,
+  data: { name?: string; email?: string; isAdmin?: boolean },
+) => {
+  const res = await fetch(`${API_URL}/api/auth/users/${id}`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -39,7 +44,7 @@ export const updateUser = async (id: string, data: { name?: string; email?: stri
 };
 
 export const deleteUser = async (id: string) => {
-  const res = await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+  const res = await fetch(`${API_URL}/api/auth/users/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
