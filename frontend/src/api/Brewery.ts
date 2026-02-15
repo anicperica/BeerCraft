@@ -13,8 +13,7 @@ export const fetchBrewery =async (): Promise<Brewery[]> => {
 };
 
 export const fetchBreweryById = async (id:string) => {
-  const url=`${API_URL}/api/brewery/${id}`
-  const res = await fetch(url,{
+  const res = await fetch(`${API_URL}/api/brewery/${id}`,{
     credentials:"include",
   });
   if (!res.ok){

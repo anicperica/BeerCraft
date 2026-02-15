@@ -2,7 +2,7 @@ import { Beer } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import type { FormEvent } from "react";
-
+import { API_URL } from "../../api/config";
 interface RegisterFormData {
   name: string;
   email: string;
@@ -15,7 +15,7 @@ export default function RegistrationPage() {
 
   const registerMutation = useMutation({
     mutationFn: async (userData: RegisterFormData) => {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         credentials:"include",
         headers: { "Content-Type": "application/json" },
@@ -27,8 +27,8 @@ export default function RegistrationPage() {
       }
       return res.json();
     },
-    onSuccess: (data) => {
-      console.log("User registered", data);
+    onSuccess: () => {
+      
       navigate("/login");
     },
     onError: (error) => {
