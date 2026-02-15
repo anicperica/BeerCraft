@@ -49,7 +49,7 @@ export default function LoginPage() {
     const loginData = Object.fromEntries(
       formData.entries()
     ) as unknown as LoginFormData;
-    console.log(loginData);
+    
     loginMutation.mutate(loginData);
   };
 
