@@ -19,7 +19,7 @@ app.use(
     credentials: true, 
   })
 );
-
+//http://localhost:5173
 
 app.use("/api/auth", authRoutes);
 app.use("/api/beers", beerRoutes);
@@ -33,7 +33,7 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
       console.log(
-        `🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+        `Server running  on port ${PORT}`
       );
     });
   } catch (error) {
