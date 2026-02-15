@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(
   cors({
-    origin: "https://beer-craft-perica-anics-projects.vercel.app/", 
+    origin: "https://beer-craft-perica-anics-projects.vercel.app", 
     credentials: true, 
   })
 );
