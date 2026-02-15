@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../api/config";
 
 export default function Navbar() {
   const { user, setUser } = useAuth();
@@ -19,13 +20,21 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   
 
-  const handleLogout = () => {
-   setUser(null);
-    queryClient.setQueryData(["currentUser"], null);
-    setIsOpen(false);
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (e) {
+      console.error("Logout failed:", e);
+    } finally {
+      setUser(null);
+      queryClient.setQueryData(["currentUser"], null);
+      setIsOpen(false);
+      navigate("/login");
+    }
   };
-
   
   return (
     <div className="flex justify-between items-center absolute pt-4 top-0 left-0 w-full z-50 pb-3  ">
