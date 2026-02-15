@@ -1,7 +1,9 @@
 import type { Brewery } from "../types";
-const url = "http://localhost:5000/api/admin";
+import { API_URL } from "./config";
+
+
 export const fetchAdminBrewery = async (): Promise<Brewery[]> => {
-  const res = await fetch(`${url}/brewery`, { credentials: "include" });
+  const res = await fetch(`${API_URL}/api/admin/brewery`, { credentials: "include" });
 
   if (!res.ok) {
     throw new Error("Failed to fetch Brewery");
@@ -10,7 +12,7 @@ export const fetchAdminBrewery = async (): Promise<Brewery[]> => {
 };
 
 export const addAdminBrewery = async (brewery: Brewery) => {
-  const res = await fetch(`${url}/brewery`, {
+  const res = await fetch(`${API_URL}/api/admin/brewery`, {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -21,7 +23,7 @@ export const addAdminBrewery = async (brewery: Brewery) => {
 };
 
 export const updateAdminBrewery = async (brewery: Brewery) => {
-  const res = await fetch(`${url}/brewery/${brewery.id}`, {
+  const res = await fetch(`${API_URL}/api/admin/brewery/${brewery.id}`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
@@ -32,7 +34,7 @@ export const updateAdminBrewery = async (brewery: Brewery) => {
 };
 
 export const deleteAdminBrewery = async (id: string) => {
-  const res = await fetch(`${url}/brewery/${id}`, {
+  const res = await fetch(`${API_URL}/api/admin/brewery/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
