@@ -19,7 +19,31 @@ Check out the live application here: [CraftBeer](https://beer-craft-perica-anics
 
 BeerCraft is a college full-stack project built to demonstrate a modern web application with authentication, protected routes, and an admin panel for managing content.
 
+Regular users can:
+
+- Browse beers and breweries
+
+- Add items to favorites
+
+- Add products to the cart
+
+Administrators have extended permissions:
+
+- Add new beers and breweries
+
+- Edit existing products
+
+- Manage application content through the admin panel
+
 The project is actively under development, with new features planned and ongoing refactoring to improve performance, structure, and overall code quality.
+
+## 🔐Demo Account
+
+You can test the admin features using the following credentials:
+
+Email: admin@gmail.com
+
+Password: admin123
 
 ## ✨ Features
 
