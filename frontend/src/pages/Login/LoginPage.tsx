@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../../context/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { API_URL } from "../../api/config";
 interface LoginFormData {
   email: string;
   password: string;
@@ -16,7 +17,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const loginMutation = useMutation({
     mutationFn: async (loginData: LoginFormData) => {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -31,7 +32,6 @@ export default function LoginPage() {
       return data
     },
     onSuccess: (data) => {
-      console.log("Logged in user:", data);
        setUser(data)
       queryClient.setQueryData(["currentUser"], data)
         navigate("/"); 
@@ -49,7 +49,7 @@ export default function LoginPage() {
     const loginData = Object.fromEntries(
       formData.entries()
     ) as unknown as LoginFormData;
-    console.log(loginData);
+    
     loginMutation.mutate(loginData);
   };
 

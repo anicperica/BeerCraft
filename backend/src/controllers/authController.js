@@ -1,6 +1,24 @@
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions = (clear = false) => {
+  const base = {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/",
+  };
+
+  if (clear) {
+    return { ...base, expires: new Date(0) };
+  }
+
+  return { ...base, maxAge: 7 * 24 * 60 * 60 * 1000 };
+};
+
+
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, passwordconfirm } = req.body;
@@ -18,13 +36,7 @@ export const registerUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie("jwt", token, {
-      httpOnly: false,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: "/",
-    });
+    res.cookie("jwt", token,cookieOptions());
 
     res.status(201).json({
       id: user.id,
@@ -43,13 +55,7 @@ export const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
       const token = generateToken(user._id);
-      res.cookie("jwt", token, {
-        httpOnly: false,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: "/",
-      });
+      res.cookie("jwt", token, cookieOptions());
 
       res.json({
         id: user.id,
@@ -66,11 +72,15 @@ export const loginUser = async (req, res) => {
   }
 };
 
+export const logoutUser = async (_req, res) => {
+  res.cookie("jwt", "", cookieOptions(true));
 
-export const getCurrentUserProfile = async (req,res) => {
+  res.status(200).json({ message: "Logged out" });
+};
+
+export const getCurrentUserProfile = async (req, res) => {
   try {
-    
-     const user = req.user;
+    const user = req.user;
     res.json({
       id: user._id,
       name: user.name,
@@ -85,7 +95,6 @@ export const getCurrentUserProfile = async (req,res) => {
 
 export const getAllRegularUsers = async (req, res) => {
   try {
-
     const users = await User.find({ isAdmin: false });
 
     if (!users || users.length === 0) {
@@ -128,7 +137,12 @@ export const updateUser = async (req, res) => {
 
     res.status(200).json({
       message: "User updated",
-      user: { id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
     });
   } catch (error) {
     console.error("Error in updateUser:", error);

@@ -1,4 +1,4 @@
-import type { Beer, BeerDetails } from "../../types";
+import type {  BeerDetails } from "../../types";
 
 interface BeerDetail{
   beer:BeerDetails

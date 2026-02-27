@@ -1,8 +1,8 @@
 import type { Brewery } from "../types";
+import { API_URL } from "./config";
 
 export const fetchBrewery =async (): Promise<Brewery[]> => {
-  const url="http://localhost:5000/api/brewery"
-  const res = await fetch(url,{
+  const res = await fetch(`${API_URL}/api/brewery`,{
     credentials:"include",
   });
 
@@ -13,8 +13,7 @@ export const fetchBrewery =async (): Promise<Brewery[]> => {
 };
 
 export const fetchBreweryById = async (id:string) => {
-  const url=`http://localhost:5000/api/brewery/${id}`
-  const res = await fetch(url,{
+  const res = await fetch(`${API_URL}/api/brewery/${id}`,{
     credentials:"include",
   });
   if (!res.ok){
