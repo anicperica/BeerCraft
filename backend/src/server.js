@@ -6,7 +6,7 @@ import beerRoutes from "./routes/beerroutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import breweryRoutes from "./routes/breweryRoutes.js";
-import beerAdminRoutes from "./routes/beerAdminRoutes.js";
+import adminRoutes from "./routes/AdminRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -23,11 +23,11 @@ app.use(
   }),
 );
 //http://localhost:5173
-//a
+//aaa
 app.use("/api/auth", authRoutes);
 app.use("/api/beers", beerRoutes);
 app.use("/api/brewery", breweryRoutes);
-app.use("/api/admin", AdminRoutes);
+app.use("/api/admin", adminRoutes);
 
 const startServer = async () => {
   try {
