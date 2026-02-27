@@ -18,7 +18,7 @@ export interface BeerDetails {
   price: number;
   alcohol: string;
   image: string;
-
+  imagePublicId:string;
  
   style: string;
   bitternes: "low" | "medium" | "high";
@@ -50,6 +50,7 @@ export interface Brewery{
   shortDescription:string;
   story:string;
   image:string;
+  imagePublicId:string;
 }
 
 export interface User {

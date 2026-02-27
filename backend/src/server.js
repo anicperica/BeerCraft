@@ -27,7 +27,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/beers", beerRoutes);
 app.use("/api/brewery", breweryRoutes);
-app.use("/api/admin", beerAdminRoutes);
+app.use("/api/admin", AdminRoutes);
 
 const startServer = async () => {
   try {

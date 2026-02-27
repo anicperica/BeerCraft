@@ -7,7 +7,8 @@ const brewerySchema = new mongoose.Schema(
     founded: { type: Number, required: true },
     shortDescription: { type: String, required: true },
     story: { type: String, required: true },
-    image: { type: String, required: true }
+    image: { type: String },
+    imagePublicId: { type: String },
   },
   { timestamps: true }
 );
