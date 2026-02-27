@@ -11,7 +11,8 @@ const beerSchema = new mongoose.Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true },
     alcohol: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String },
+    imagePublicId: { type: String},
 
  
     style: { type: String, required: true },

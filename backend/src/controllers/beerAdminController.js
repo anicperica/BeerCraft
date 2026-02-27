@@ -9,25 +9,29 @@ function bufferToDataUrl(file) {
 
 export const uploadAdminImage = async (req, res) => {
   try {
-   
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const dataUri = bufferToDataUrl(req.file);
+    const dataUrl = bufferToDataUrl(req.file);
 
-    const result = await cloudinary.uploader.upload(dataUri, {
+    const result = await cloudinary.uploader.upload(dataUrl, {
       folder: "beercraft",
       resource_type: "image",
+      transformation: [
+        { quality: "auto", fetch_format: "auto", },
+      ],
     });
 
-    return res.status(200).json({ url: result.secure_url });
+    return res
+      .status(200)
+      .json({ url: result.secure_url, public_id: result.public_id });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Upload failed" });
+    return res
+      .status(500)
+      .json({ message: "Upload failed", error: error.message });
   }
 };
-
 
 export const getAdminBeers = async (req, res) => {
   try {
@@ -45,12 +49,13 @@ export const getAdminBeers = async (req, res) => {
         price: beer.price,
         alcohol: beer.alcohol,
         image: beer.image,
+        imagePublicId: beer.imagePublicId,
         style: beer.style,
         bitternes: beer.bitterness,
         volume: beer.volume,
         tastingNotes: beer.tastingNotes,
         ingredients: beer.ingredients,
-      }))
+      })),
     );
   } catch (error) {
     console.error(error);
@@ -67,6 +72,7 @@ export const addAdminBeer = async (req, res) => {
       price,
       alcohol,
       image,
+      imagePublicId,
       style,
       bitternes,
       volume,
@@ -87,6 +93,7 @@ export const addAdminBeer = async (req, res) => {
       price,
       alcohol,
       image,
+      imagePublicId,
       style,
       bitterness: bitternes,
       volume,
@@ -114,6 +121,7 @@ export const updateAdminBeer = async (req, res) => {
       price,
       alcohol,
       image,
+      imagePublicId,
       style,
       bitternes,
       volume,
@@ -128,21 +136,31 @@ export const updateAdminBeer = async (req, res) => {
       price,
       alcohol,
       image,
+      imagePublicId,
       style,
       bitterness: bitternes,
       volume,
       tastingNotes,
       ingredients,
     };
-   
+
+    const beer = await Beer.findById(id);
+    if (!beer) {
+      return res.status(404).json({ message: "Beer not found" });
+    }
+    if (
+      req.body.imagePublicId &&
+      beer.imagePublicId &&
+      req.body.imagePublicId !== beer.imagePublicId
+    ) {
+      await cloudinary.uploader.destroy(beer.imagePublicId);
+    }
+    updatedData.image = image;
+    updatedData.imagePublicId = imagePublicId;
+
     const updatedBeer = await Beer.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
-
-    if (!updatedBeer) {
-      return res.status(404).json({ message: "Beer not found" });
-    }
-
     res.status(200).json(updatedBeer);
   } catch (error) {
     console.error(error);
@@ -154,15 +172,16 @@ export const deleteAdminBeer = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedBeer = await Beer.findByIdAndDelete(id);
+    const beer = await Beer.findById(id);
 
-    if (!deletedBeer) {
+    if (!beer) {
       return res.status(404).json({ message: "Beer not found" });
     }
-
-    res
-      .status(200)
-      .json({ message: "Beer deleted successfully", beer: deletedBeer });
+    if (beer.imagePublicId) {
+      await cloudinary.uploader.destroy(beer.imagePublicId);
+    }
+    await Beer.findByIdAndDelete(id);
+    res.status(200).json({ message: "Beer deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -182,7 +201,8 @@ export const getAdminBrewery = async (req, res) => {
         founded: brewery.founded,
         story: brewery.story,
         image: brewery.image,
-      }))
+        imagePublicId: brewery.imagePublicId,
+      })),
     );
   } catch (error) {
     console.error(error);
@@ -192,8 +212,15 @@ export const getAdminBrewery = async (req, res) => {
 
 export const addAdminBrewery = async (req, res) => {
   try {
-    const { name, location, shortDescription, founded, story, image } =
-      req.body;
+    const {
+      name,
+      location,
+      shortDescription,
+      founded,
+      story,
+      image,
+      imagePublicId,
+    } = req.body;
 
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
@@ -206,6 +233,7 @@ export const addAdminBrewery = async (req, res) => {
       founded,
       story,
       image,
+      imagePublicId,
     });
 
     const savedBrewery = await newBrewery.save();
@@ -219,18 +247,23 @@ export const addAdminBrewery = async (req, res) => {
 export const updateAdminBrewery = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, location, shortDescription, founded, story, image } =
-      req.body;
 
-    const updatedBrewery = await Brewery.findByIdAndUpdate(
-      id,
-      { name, location, shortDescription, founded, story, image },
-      { new: true }
-    );
-
-    if (!updatedBrewery) {
+    const brewery = await Brewery.findById(id);
+    if (!brewery) {
       return res.status(404).json({ message: "Brewery not found" });
     }
+
+    if (
+      req.body.imagePublicId &&
+      brewery.imagePublicId &&
+      req.body.imagePublicId !== brewery.imagePublicId
+    ) {
+      await cloudinary.uploader.destroy(brewery.imagePublicId);
+    }
+
+    const updatedBrewery = await Brewery.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
 
     res.status(200).json(updatedBrewery);
   } catch (error) {
@@ -238,19 +271,16 @@ export const updateAdminBrewery = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 export const deleteAdminBrewery = async (req, res) => {
   try {
     const { id } = req.params;
 
     const brewery = await Brewery.findById(id);
-
     if (!brewery) {
       return res.status(404).json({ message: "Brewery not found" });
     }
 
     const beerCount = await Beer.countDocuments({ brewery: id });
-
     if (beerCount > 0) {
       return res.status(400).json({
         message:
@@ -258,11 +288,13 @@ export const deleteAdminBrewery = async (req, res) => {
       });
     }
 
+    if (brewery.imagePublicId) {
+      await cloudinary.uploader.destroy(brewery.imagePublicId);
+    }
+
     await Brewery.findByIdAndDelete(id);
 
-    res.status(200).json({
-      message: "Brewery deleted successfully",
-    });
+    res.status(200).json({ message: "Brewery deleted successfully", brewery });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
