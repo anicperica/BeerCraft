@@ -17,7 +17,7 @@ Check out the live application here: [CraftBeer](https://beer-craft-perica-anics
 
 ## 💡 About the Project
 
-BeerCraft is a college full-stack project built to demonstrate a modern web application with authentication, protected routes, and an admin panel for managing content.
+BeerCraft is a full-stack college project designed to showcase a modern web application with authentication, protected routes, and an admin panel for managing content. Beyond the basic college project requirements, it is continuously enhanced with additional features and personal ideas, evolving and improving beyond the initial scope.
 
 Regular users can:
 
@@ -57,9 +57,13 @@ Password: admin123
 
 🛠 Admin panel for content control
 
-🖼 Image upload for beer entries(in progres)
+🔒 Resource locking for concurrent edits – Prevents multiple admins from editing the same beer or brewery at the same time, ensuring data integrity and avoiding conflicting updates
+
+🖼 Image upload for beer  and breweries 
 
 📱 Responsive design for all devices – Styled with Tailwind CSS
+
+
 
 
 ## 🧰 Tech Stack
