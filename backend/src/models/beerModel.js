@@ -12,9 +12,8 @@ const beerSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     alcohol: { type: String, required: true },
     image: { type: String },
-    imagePublicId: { type: String},
+    imagePublicId: { type: String },
 
- 
     style: { type: String, required: true },
     bitterness: {
       type: String,
@@ -27,8 +26,17 @@ const beerSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    lockedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    lockedAt: {
+      type: Date,
+      default: null,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Beer = mongoose.model("Beer", beerSchema);

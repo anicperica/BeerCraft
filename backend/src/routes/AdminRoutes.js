@@ -1,4 +1,5 @@
 import express from "express";
+import Beer from "../models/beerModel.js";
 import { upload } from "../middleware/upload.js";
 import { uploadAdminImage } from "../controllers/beerAdminController.js";
 import {
@@ -12,29 +13,33 @@ import {
   deleteAdminBrewery,
 } from "../controllers/beerAdminController.js";
 
-import  {protectRoute,adminOnly} from "../middleware/authMiddleware.js"
-
+import { protectRoute, adminOnly } from "../middleware/authMiddleware.js";
+import { lockResource } from "../middleware/lockingResources/lockResource.js";
+import { unlockResource } from "../middleware/lockingResources/unlockResource.js";
+import { checkLockOwnership } from "../middleware/lockingResources/checkLockOwnership.js";
 const router = express.Router();
-
 
 router.post(
   "/upload",
   protectRoute,
   adminOnly,
   upload.single("image"),
-  uploadAdminImage
+  uploadAdminImage,
 );
 
+router.get("/beers", protectRoute, adminOnly, getAdminBeers);
+router.post("/beers", protectRoute, adminOnly, addAdminBeer);
+router.put("/beers/:id", protectRoute, adminOnly,checkLockOwnership(Beer),updateAdminBeer);
+router.delete("/beers/:id", protectRoute, adminOnly, deleteAdminBeer);
+router.post("/beer/:id/lock", protectRoute, adminOnly, lockResource(Beer));
+router.post("/beers/:id/unlock", protectRoute, adminOnly, unlockResource(Beer));
 
-router.get("/beers",protectRoute, adminOnly,getAdminBeers);
-router.post("/beers", protectRoute,adminOnly,addAdminBeer);
-router.put("/beers/:id",protectRoute ,adminOnly,updateAdminBeer);
-router.delete("/beers/:id",protectRoute ,adminOnly, deleteAdminBeer);
+
+router.get("/brewery", protectRoute, adminOnly, getAdminBrewery);
+router.post("/brewery", protectRoute, adminOnly, addAdminBrewery);
+router.put("/brewery/:id", protectRoute, adminOnly, updateAdminBrewery);
+router.delete("/brewery/:id", protectRoute, adminOnly, deleteAdminBrewery);
 
 
-router.get("/brewery", protectRoute ,adminOnly,getAdminBrewery);
-router.post("/brewery",protectRoute ,adminOnly, addAdminBrewery);
-router.put("/brewery/:id",protectRoute ,adminOnly, updateAdminBrewery);
-router.delete("/brewery/:id", protectRoute ,adminOnly,deleteAdminBrewery);
 
 export default router;

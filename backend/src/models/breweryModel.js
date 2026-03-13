@@ -9,8 +9,17 @@ const brewerySchema = new mongoose.Schema(
     story: { type: String, required: true },
     image: { type: String },
     imagePublicId: { type: String },
+    lockedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+    lockedAt: {
+      type: Date,
+      default: null,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Brewery = mongoose.model("Brewery", brewerySchema);
