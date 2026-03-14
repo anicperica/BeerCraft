@@ -12,14 +12,11 @@ export const checkLockOwnership = (Model) => {
 
       if (!resource.lockedBy || resource.lockedBy.toString() !== adminId) {
         return res.status(423).json({
-          message: "You dont have authority to unlock this resource",
+          message: "You dont have permission to unlock this resource",
         });
       }
-      resource.lockedBy = null;
-      resource.loceedAt = null;
 
-      await resource.save();
-      res.status(200).json({ message: "Resorce successfully unlocked " });
+      next();
     } catch (error) {
       res.status(404).json({ message: "Server error " });
     }

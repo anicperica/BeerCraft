@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { BeerDetails, Brewery } from "../../../types/index";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAdminBrewery } from "../../../api/AdminBrewery";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchAdminBrewery } from "../../../api/AdminBrewery"
+import { removeBeerLock } from "../../../api/resourceLock";
 export interface BeerFormProps {
   beer?: BeerDetails;
   onSubmit: (data: BeerDetails) => void;
@@ -115,6 +116,20 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     setUploading(false);
   }
 };
+
+const unlockBeerMutation = useMutation({
+  mutationFn:removeBeerLock,
+  onSuccess:()=>{onCancel()},
+  onError:(error)=>{console.log(error)}
+})
+
+const handleCancel = () => {
+  if (beer?.id) {
+    unlockBeerMutation.mutate(beer.id)
+  } else {
+    onCancel()
+  }
+}
   return (
     <form
       onSubmit={handleSubmit}
@@ -276,7 +291,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
       <div className="flex gap-3 pt-4 pb-5">
         <button
           type="button"
-          onClick={onCancel}
+          onClick={handleCancel}
           className="flex-1 border border-zinc-600 text-zinc-300 rounded-lg py-2"
         >
           Cancel

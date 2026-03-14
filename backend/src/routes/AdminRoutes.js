@@ -1,5 +1,6 @@
 import express from "express";
 import Beer from "../models/beerModel.js";
+import Brewery from "../models/breweryModel.js";
 import { upload } from "../middleware/upload.js";
 import { uploadAdminImage } from "../controllers/beerAdminController.js";
 import {
@@ -39,7 +40,9 @@ router.get("/brewery", protectRoute, adminOnly, getAdminBrewery);
 router.post("/brewery", protectRoute, adminOnly, addAdminBrewery);
 router.put("/brewery/:id", protectRoute, adminOnly, updateAdminBrewery);
 router.delete("/brewery/:id", protectRoute, adminOnly, deleteAdminBrewery);
-
+router.post("/brewery/:id/lock", protectRoute, adminOnly, lockResource(Brewery));
+router.post("/brewery/:id/unlock", protectRoute, adminOnly, unlockResource(Brewery));
+//router.put("/brewery/:id", protectRoute, adminOnly, checkLockOwnership(Brewery), updateAdminBrewery);
 
 
 export default router;

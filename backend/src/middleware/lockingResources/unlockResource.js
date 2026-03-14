@@ -15,9 +15,12 @@ export const unlockResource = (Model) => {
           message: "You dont have authority to unlock this resource",
         });
       }
-  
-     next();
-     
+
+      resource.lockedBy = null;
+      resource.lockedAt = null;
+
+      await resource.save();
+      res.status(200).json({ message: "Resource successfully unlocked" });
     } catch (error) {
       res.status(404).json({ message: "Server error " });
     }

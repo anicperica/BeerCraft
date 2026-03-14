@@ -1,6 +1,7 @@
 import { Pencil, Trash } from "lucide-react";
 import type { BeerDetails } from "../../types";
-
+import { addBeerLock } from "../../api/resourceLock";
+import { useMutation } from "@tanstack/react-query";
 interface AdminBeerCardProps {
   beer: BeerDetails;
   onEdit: (id: string) => void;
@@ -12,14 +13,25 @@ export default function AdminBeerCard({
   onEdit,
   onDelete,
 }: AdminBeerCardProps) {
-  
+ 
+const lockBeerMutation = useMutation({
+  mutationFn:addBeerLock,
+  onSuccess:()=>{onEdit(beer.id)},
+  onError:(error)=>{console.log(error);
+    alert("This beer is currently being edited by another admin.")
+  }
+})
+const handleClick = ()=>{
+  lockBeerMutation.mutate(beer.id)
+}
+
   return (
     <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl p-4">
       <h1 className="text-white font-semibold">{beer.name}</h1>
       
       <div className="flex gap-3">
         <button
-          onClick={() => onEdit(beer.id)}
+          onClick={handleClick}
           className="text-gray-400 "
           title="Edit beer"
         >
