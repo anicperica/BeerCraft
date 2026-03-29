@@ -1,6 +1,6 @@
 import AdminBreweryCard from "./AdminBreweryCard";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import BreweryModal from "./breweryForm/BreweryModal";
 import BreweryForm from "./breweryForm/BreweryForm";
 import type { Brewery } from "../../types";
@@ -10,12 +10,13 @@ import {
   updateAdminBrewery,
   deleteAdminBrewery,
 } from "../../api/AdminBrewery";
+import { removeBreweryLock } from "../../api/resourceLock";
 
 export default function AdminBrewery() {
   const queryClient = useQueryClient();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBrewery, setSelectedBrewery] = useState<Brewery | undefined>(
-    undefined
+    undefined,
   );
 
   const {
@@ -27,6 +28,18 @@ export default function AdminBrewery() {
     queryFn: fetchAdminBrewery,
   });
 
+   useEffect(() => {
+      const handleTabClose = () => {
+        if (selectedBrewery && selectedBrewery.id) {
+          removeBreweryLock(selectedBrewery.id).catch(console.error);
+        }
+      };
+      window.addEventListener("beforeunload", handleTabClose);
+  
+      return () => {
+        window.removeEventListener("beforeunload", handleTabClose);
+      };
+    }, [selectedBrewery]);
   const addMutation = useMutation({
     mutationFn: addAdminBrewery,
     onSuccess: () =>
@@ -41,8 +54,21 @@ export default function AdminBrewery() {
     mutationFn: deleteAdminBrewery,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["adminBrewery"] }),
+    onError: (error) => {
+      console.log(error);
+      alert("Not possible to delete this brewery, it is currently being edited by another admin");
+    }
+  });
+  const unlockMutation = useMutation({
+    mutationFn: removeBreweryLock,
   });
 
+  const handleCloseModal = () => {
+    if (selectedBrewery && selectedBrewery.id) {
+      unlockMutation.mutate(selectedBrewery.id);
+    }
+    setModalOpen(false);
+  };
   const handleAddClick = () => {
     setSelectedBrewery(undefined);
     setModalOpen(true);
@@ -103,13 +129,13 @@ export default function AdminBrewery() {
 
         <BreweryModal
           isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={handleCloseModal}
           title={selectedBrewery ? "Edit Brewery" : "Add Brewery"}
         >
           <BreweryForm
             brewery={selectedBrewery}
             onSubmit={handleSubmit}
-            onCancel={() => setModalOpen(false)}
+            onCancel={handleCloseModal}
           />
         </BreweryModal>
       </div>

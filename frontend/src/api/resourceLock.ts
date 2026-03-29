@@ -1,8 +1,6 @@
 import { API_URL } from "./config";
 
-
-
-export const addBeerLock = async (beerId:string) => {
+export const addBeerLock = async (beerId: string) => {
   const res = await fetch(`${API_URL}/api/admin/beers/${beerId}/lock`, {
     method: "POST",
     credentials: "include",
@@ -13,11 +11,34 @@ export const addBeerLock = async (beerId:string) => {
 
   return res.json();
 };
-
-export const removeBeerLock = async (beerId:string) => {
+export const removeBeerLock = async (beerId: string) => {
   const res = await fetch(`${API_URL}/api/admin/beers/${beerId}/unlock`, {
     method: "POST",
     credentials: "include",
+    keepalive:true,
+  });
+  if (!res.ok) {
+    throw new Error("Failed to unlock  beer");
+  }
+
+  return res.json();
+};
+
+export const addBreweryLock = async (breweryId: string) => {
+  const res = await fetch(`${API_URL}/api/admin/brewery/${breweryId}/lock`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to lock brewery");
+  }
+  return res.json();
+};
+export const removeBreweryLock = async (breweryId: string) => {
+  const res = await fetch(`${API_URL}/api/admin/brewery/${breweryId}/unlock`, {
+    method: "POST",
+    credentials: "include",
+    keepalive:true,
   });
   if (!res.ok) {
     throw new Error("Failed to unlock  beer");

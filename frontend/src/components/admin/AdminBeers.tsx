@@ -1,5 +1,5 @@
 import AdminBeerCard from "./AdminBeerCard";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteAdminBeer,
@@ -7,6 +7,7 @@ import {
   addAdminBeer,
   updateAdminBeer,
 } from "../../api/AdminBeers";
+import { removeBeerLock } from "../../api/resourceLock";
 import BeerModal from "./beerForm/BeerModal";
 import BeerForm from "./beerForm/BeerForm";
 import type { BeerDetails } from "../../types/index";
@@ -29,6 +30,18 @@ export default function AdminBeers() {
     undefined
   );
 
+  useEffect(() => {
+    const handleTabClose = () => {
+      if (selectedBeer && selectedBeer.id) {
+        removeBeerLock(selectedBeer.id).catch(console.error);
+      }
+    };
+    window.addEventListener("beforeunload", handleTabClose);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [selectedBeer]);
   const addMutation = useMutation({
     mutationFn: addAdminBeer,
     onSuccess: () =>
@@ -45,6 +58,13 @@ export default function AdminBeers() {
     mutationFn: deleteAdminBeer,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["adminBeers"] }),
+    onError: (error) => {
+      console.log(error);
+      alert("Not possible to delete this beer, it is currently being edited by another admin");
+    }
+  });
+  const unlockMutation = useMutation({
+    mutationFn: removeBeerLock,
   });
   const handleAddClick = () => {
     setSelectedBeer(undefined);
@@ -60,6 +80,12 @@ export default function AdminBeers() {
     if (confirm("Are you sure you want to delete this beer?")) {
       deleteMutation.mutate(id);
     }
+  };
+  const handleCloseModal = () => {
+    if (selectedBeer && selectedBeer.id) {
+      unlockMutation.mutate(selectedBeer.id);
+    }
+    setModalOpen(false);
   };
 
   const handleSubmit = (beer: BeerDetails) => {
@@ -109,13 +135,13 @@ export default function AdminBeers() {
 
       <BeerModal
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={handleCloseModal}
         title={selectedBeer ? "Edit Beer" : "Add Beer"}
       >
         <BeerForm
           beer={selectedBeer}
           onSubmit={handleSubmit}
-          onCancel={() => setModalOpen(false)}
+          onCancel={handleCloseModal}
         />
       </BeerModal>
     </div>

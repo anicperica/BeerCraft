@@ -18,6 +18,7 @@ import { protectRoute, adminOnly } from "../middleware/authMiddleware.js";
 import { lockResource } from "../middleware/lockingResources/lockResource.js";
 import { unlockResource } from "../middleware/lockingResources/unlockResource.js";
 import { checkLockOwnership } from "../middleware/lockingResources/checkLockOwnership.js";
+import { preventDeleteIfLocked } from "../middleware/lockingResources/preventDeleteIfLocked.js";
 const router = express.Router();
 
 router.post(
@@ -31,18 +32,18 @@ router.post(
 router.get("/beers", protectRoute, adminOnly, getAdminBeers);
 router.post("/beers", protectRoute, adminOnly, addAdminBeer);
 router.put("/beers/:id", protectRoute, adminOnly,checkLockOwnership(Beer),updateAdminBeer);
-router.delete("/beers/:id", protectRoute, adminOnly, deleteAdminBeer);
-router.post("/beer/:id/lock", protectRoute, adminOnly, lockResource(Beer));
+router.delete("/beers/:id", protectRoute, adminOnly,preventDeleteIfLocked(Beer), deleteAdminBeer);
+router.post("/beers/:id/lock", protectRoute, adminOnly, lockResource(Beer));
 router.post("/beers/:id/unlock", protectRoute, adminOnly, unlockResource(Beer));
 
 
 router.get("/brewery", protectRoute, adminOnly, getAdminBrewery);
 router.post("/brewery", protectRoute, adminOnly, addAdminBrewery);
-router.put("/brewery/:id", protectRoute, adminOnly, updateAdminBrewery);
-router.delete("/brewery/:id", protectRoute, adminOnly, deleteAdminBrewery);
+router.put("/brewery/:id", protectRoute, adminOnly,checkLockOwnership(Brewery), updateAdminBrewery);
+router.delete("/brewery/:id", protectRoute, adminOnly,preventDeleteIfLocked(Brewery), deleteAdminBrewery);
 router.post("/brewery/:id/lock", protectRoute, adminOnly, lockResource(Brewery));
 router.post("/brewery/:id/unlock", protectRoute, adminOnly, unlockResource(Brewery));
-//router.put("/brewery/:id", protectRoute, adminOnly, checkLockOwnership(Brewery), updateAdminBrewery);
+
 
 
 export default router;

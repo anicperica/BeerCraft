@@ -18,9 +18,7 @@ export const uploadAdminImage = async (req, res) => {
     const result = await cloudinary.uploader.upload(dataUrl, {
       folder: "beercraft",
       resource_type: "image",
-      transformation: [
-        { quality: "auto", fetch_format: "auto", },
-      ],
+      transformation: [{ quality: "auto", fetch_format: "auto" }],
     });
 
     return res
@@ -158,6 +156,9 @@ export const updateAdminBeer = async (req, res) => {
     updatedData.image = image;
     updatedData.imagePublicId = imagePublicId;
 
+    updatedData.lockedBy = null;
+    updatedData.lockedAt = null;
+
     const updatedBeer = await Beer.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
@@ -260,8 +261,11 @@ export const updateAdminBrewery = async (req, res) => {
     ) {
       await cloudinary.uploader.destroy(brewery.imagePublicId);
     }
+    const updatedData = { ...req.body };
+    updatedData.lockedBy = null;
+    updatedData.lockedAt = null;
 
-    const updatedBrewery = await Brewery.findByIdAndUpdate(id, req.body, {
+    const updatedBrewery = await Brewery.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
 

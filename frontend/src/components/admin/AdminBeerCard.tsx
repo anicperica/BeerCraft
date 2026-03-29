@@ -4,7 +4,7 @@ import { addBeerLock } from "../../api/resourceLock";
 import { useMutation } from "@tanstack/react-query";
 interface AdminBeerCardProps {
   beer: BeerDetails;
-  onEdit: (id: string) => void;
+  onEdit: () => void;
   onDelete: (id: string) => void;
 }
 
@@ -16,7 +16,7 @@ export default function AdminBeerCard({
  
 const lockBeerMutation = useMutation({
   mutationFn:addBeerLock,
-  onSuccess:()=>{onEdit(beer.id)},
+  onSuccess:()=>{onEdit()},
   onError:(error)=>{console.log(error);
     alert("This beer is currently being edited by another admin.")
   }

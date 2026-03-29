@@ -57,11 +57,13 @@ Password: admin123
 
 🛠 Admin panel for content control
 
-🔒 Resource locking for concurrent edits (in progress) – Prevents multiple admins from editing the same beer or brewery at the same time, ensuring data integrity and avoiding conflicting updates
+🔒 Resource locking for concurrent edits – Prevents multiple admins from editing the same beer or brewery at the same time, ensuring data integrity and avoiding conflicting updates
 
 🖼 Image upload for beer  and breweries 
 
 📱 Responsive design for all devices – Styled with Tailwind CSS
+
+
 
 
 
