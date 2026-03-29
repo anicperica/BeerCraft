@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { API_URL } from "../../../api/config";
 import type { BeerDetails, Brewery } from "../../../types/index";
-import {  useQuery } from "@tanstack/react-query";
-import { fetchAdminBrewery } from "../../../api/AdminBrewery"
+import { useQuery } from "@tanstack/react-query";
+import { fetchAdminBrewery } from "../../../api/AdminBrewery";
+
 export interface BeerFormProps {
   beer?: BeerDetails;
   onSubmit: (data: BeerDetails) => void;
@@ -13,19 +15,18 @@ export default function BeerForm({ beer, onSubmit, onCancel }: BeerFormProps) {
     queryKey: ["adminBrewery"],
     queryFn: fetchAdminBrewery,
   });
-const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(beer?.image || null);
   const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState<BeerDetails>({
     id: beer?.id || "",
     name: beer?.name || "",
-
     brewery:
       typeof beer?.brewery === "string"
         ? beer.brewery
         : (beer?.brewery as any)?.id || "",
-
     description: beer?.description || "",
     price: beer?.price || 0,
     alcohol: beer?.alcohol || "",
@@ -54,7 +55,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     }
   };
 
-   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -62,7 +63,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     setPreview(URL.createObjectURL(file));
   };
 
-   const removeImage = () => {
+  const removeImage = () => {
     setSelectedFile(null);
     setPreview(null);
     setFormData((prev) => ({
@@ -72,15 +73,15 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     }));
   };
 
-    const uploadImageToCloudinary = async () => {
+  const uploadImageToCloudinary = async () => {
     if (!selectedFile) return null;
 
     const formDataUpload = new FormData();
     formDataUpload.append("image", selectedFile);
 
-    const res = await fetch("http://localhost:5000/api/admin/upload", {
+    const res = await fetch(`${API_URL}/api/admin/upload`, {
       method: "POST",
-      credentials:"include",
+      credentials: "include",
       body: formDataUpload,
     });
 
@@ -89,42 +90,34 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
     return res.json();
   };
 
-   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    setUploading(true);
+    try {
+      setUploading(true);
 
-    let payload = { ...formData };
+      let payload = { ...formData };
 
-    if (selectedFile) {
-      const uploaded = await uploadImageToCloudinary();
+      if (selectedFile) {
+        const uploaded = await uploadImageToCloudinary();
 
-      if (uploaded) {
-        payload.image = uploaded.url;
-        payload.imagePublicId = uploaded.public_id;
+        if (uploaded) {
+          payload.image = uploaded.url;
+          payload.imagePublicId = uploaded.public_id;
+        }
       }
+
+      onSubmit(payload);
+    } catch (err) {
+      console.error(err);
+      alert("Image upload failed");
+    } finally {
+      setUploading(false);
     }
-
-    onSubmit(payload);
-
-  } catch (err) {
-    console.error(err);
-    alert("Image upload failed");
-  } finally {
-    setUploading(false);
-  }
-};
-
-
-
-
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6 text-white max-h-[80vh]  "
-    >
+    <form onSubmit={handleSubmit} className="space-y-6 text-white max-h-[80vh]">
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col">
           <label className="mb-1 text-gray-300">Name *</label>
@@ -256,7 +249,7 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
         />
       </div>
 
-     <div className="flex flex-col">
+      <div className="flex flex-col">
         <label className="mb-2 text-gray-300">Image</label>
 
         {preview ? (
@@ -274,7 +267,12 @@ const [selectedFile, setSelectedFile] = useState<File | null>(null);
             </button>
           </div>
         ) : (
-          <input type="file" accept="image/*" className="hover:bg-zinc-800 px-3 py-2 border rounded-lg border-zinc-700" onChange={handleImageSelect} />
+          <input
+            type="file"
+            accept="image/*"
+            className="hover:bg-zinc-800 px-3 py-2 border rounded-lg border-zinc-700"
+            onChange={handleImageSelect}
+          />
         )}
       </div>
 
