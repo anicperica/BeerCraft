@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { BeerDetails, Brewery } from "../../../types/index";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {  useQuery } from "@tanstack/react-query";
 import { fetchAdminBrewery } from "../../../api/AdminBrewery"
 export interface BeerFormProps {
   beer?: BeerDetails;
