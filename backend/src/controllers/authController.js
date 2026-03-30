@@ -7,7 +7,7 @@ const cookieOptions = (clear = false) => {
   const base = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
+    sameSite: "lax",
     path: "/",
   };
 
@@ -17,7 +17,6 @@ const cookieOptions = (clear = false) => {
 
   return { ...base, maxAge: 7 * 24 * 60 * 60 * 1000 };
 };
-
 
 export const registerUser = async (req, res) => {
   try {
@@ -36,7 +35,7 @@ export const registerUser = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.cookie("jwt", token,cookieOptions());
+    res.cookie("jwt", token, cookieOptions());
 
     res.status(201).json({
       id: user.id,
@@ -66,7 +65,6 @@ export const loginUser = async (req, res) => {
     } else {
       res.status(401).json({ message: "Invalid email or password" });
     }
-  
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
